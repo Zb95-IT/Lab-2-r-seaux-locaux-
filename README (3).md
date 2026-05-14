@@ -7,8 +7,37 @@ Mettre en place un réseau multi-sites avec routage statique IPv4 et IPv6 dans C
 ## Topologie
 
 ```
-<img width="601" height="692" alt="image" src="https://github.com/user-attachments/assets/a6c1092c-c4d1-434e-97f2-2c9e0c5902e1" />
-
+┌──────┐         ┌──────┐
+       │ PC0  │         │ PC1  │
+       └──┬───┘         └──┬───┘
+          │                │
+     ┌────┴────────────────┴────┐
+     │       Switch0            │
+     └──────────┬───────────────┘
+                │ Gi0/0
+           ┌────┴────┐
+           │   R1    │  Site 1 — 192.168.1.0/24
+           └────┬────┘
+                │ Gi0/1
+                │
+                │ Gi0/0
+           ┌────┴────┐
+           │ Internet│
+           └────┬────┘
+                │ Gi0/1
+                │
+                │ Gi0/1
+           ┌────┴────┐
+           │   R2    │  Site 2 — 192.168.2.0/24
+           └────┬────┘
+                │ Gi0/0
+     ┌──────────┴───────────────┐
+     │       Switch1            │
+     └────┬────────────────┬────┘
+          │                │
+       ┌──┴───┐         ┌──┴───┐
+       │ PC2  │         │ PC3  │
+       └──────┘         └──────┘
 ```
 
 ## Plan d'adressage
