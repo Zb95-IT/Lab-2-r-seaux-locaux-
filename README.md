@@ -1,4 +1,4 @@
-# Lab Routage Statique IPv4/IPv6 — Cisco Packet Tracer
+# Lab Routage Statique IPv4/IPv6 Cisco Packet Tracer
 
 ## Objectif
 
