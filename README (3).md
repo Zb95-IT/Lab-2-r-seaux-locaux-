@@ -7,7 +7,7 @@ Mettre en place un réseau multi-sites avec routage statique IPv4 et IPv6 dans C
 ## Topologie
 
 ```
-┌──────┐         ┌──────┐
+       ┌──────┐         ┌──────┐
        │ PC0  │         │ PC1  │
        └──┬───┘         └──┬───┘
           │                │
