@@ -74,11 +74,11 @@ Mettre en place un réseau multi-sites avec routage statique IPv4 et IPv6 dans C
 
 ## Déroulement
 
-### 1 — Mise en place du Site 1
+### 1 Mise en place du Site 1
 
 Placement d'un switch 2960 et de deux PCs reliés en câbles droits. Configuration des adresses IPv4/IPv6 et des masques sur PC0 et PC1, puis vérification de la connectivité locale par ping.
 
-### 2 — Configuration du routeur R1
+### 2 Configuration du routeur R1
 
 Activation du routage IPv6 avec `ipv6 unicast-routing`, puis configuration de l'interface LAN (Gi0/0) sur le réseau 192.168.1.0/24 et de l'interface WAN (Gi0/1) sur le lien 198.51.100.0/30. Les PCs du site utilisent l'adresse LAN du routeur (192.168.1.1) comme passerelle par défaut.
 
@@ -97,25 +97,25 @@ R1(config-if)# ipv6 address 2001:db8:cafe:feed::1/64
 R1(config-if)# no shutdown
 ```
 
-### 3 — Mise en place du Site 2
+### 3 Mise en place du Site 2
 
 Même principe que le Site 1 : un routeur R2, un switch 2960, deux PCs (PC2, PC3) sur le réseau 192.168.2.0/24. L'interface WAN de R2 est configurée sur le lien 198.51.100.4/30.
 
-### 4 — Ajout du routeur Internet
+### 4 Ajout du routeur Internet
 
 Un troisième routeur 2911 est placé entre R1 et R2 pour simuler le réseau Internet. Il est relié aux interfaces WAN de R1 et R2 par des câbles croisés (connexion routeur-routeur). Ses deux interfaces sont configurées sur les liens WAN correspondants.
 
-### 5 — Diagnostic avant routage
+### 5 Diagnostic avant routage
 
 A ce stade, un ping de PC0 vers PC2 échoue avec "Destination host unreachable". La commande `show ip route` sur R1 montre qu'il ne connaît que ses réseaux directement connectés (192.168.1.0/24 et 198.51.100.0/30). Il n'a aucune information sur le réseau 192.168.2.0/24 du Site 2.
 
 Un routeur ne route que vers les réseaux qu'il connaît. Sans route configurée, il abandonne le paquet.
 
-### 6 — Configuration des routes statiques
+### 6 Configuration des routes statiques
 
 Routes ajoutées sur chaque routeur pour assurer la connectivité complète.
 
-Sur R1 — vers le Site 2, next-hop 198.51.100.2 (routeur Internet) :
+Sur R1 vers le Site 2, next-hop 198.51.100.2 (routeur Internet) :
 
 ```
 R1(config)# ip route 192.168.2.0 255.255.255.0 198.51.100.2
@@ -124,7 +124,7 @@ R1(config)# ipv6 route 2001:db8:babe:babe::0/64 2001:db8:cafe:feed::2
 R1(config)# ipv6 route 2001:db8:babe:feed::0/64 2001:db8:cafe:feed::2
 ```
 
-Sur R2 — vers le Site 1, next-hop 198.51.100.6 (routeur Internet) :
+Sur R2 vers le Site 1, next-hop 198.51.100.6 (routeur Internet) :
 
 ```
 R2(config)# ip route 192.168.1.0 255.255.255.0 198.51.100.6
@@ -133,7 +133,7 @@ R2(config)# ipv6 route 2001:db8:cafe:cafe::0/64 2001:db8:babe:feed::2
 R2(config)# ipv6 route 2001:db8:cafe:feed::0/64 2001:db8:babe:feed::2
 ```
 
-Sur Internet — vers les deux LANs :
+Sur Internet vers les deux LANs :
 
 ```
 Internet(config)# ip route 192.168.1.0 255.255.255.0 198.51.100.1
@@ -142,7 +142,7 @@ Internet(config)# ipv6 route 2001:db8:cafe:cafe::/64 2001:db8:cafe:feed::1
 Internet(config)# ipv6 route 2001:db8:babe:babe::/64 2001:db8:babe:feed::1
 ```
 
-### 7 — Vérification finale
+### 7 Vérification finale
 
 Ping de PC0 (192.168.1.10) vers PC2 (192.168.2.10) en IPv4 : connectivité OK.
 Ping de PC0 vers PC2 (2001:db8:babe:babe::10) en IPv6 : connectivité OK.
